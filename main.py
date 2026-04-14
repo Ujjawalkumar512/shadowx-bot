@@ -254,4 +254,4 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
 
 
 import os
-bot.run(os.getenv("MTQ5MzQ4MjQwMzIyMDU1MzkwOA.GXLfJD.9iNEE65SuguUS4DCtwBRehuQW7xFvsayVbA8Q0"))
+bot.run(os.getenv("TOKEN"))
