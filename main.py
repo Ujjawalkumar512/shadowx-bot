@@ -176,7 +176,7 @@ async def nplist(ctx):
 async def clear(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
     await ctx.send(
-        Deleted f"{amount} messages.",
+        f"{amount} Deleted messages.",
         delete_after=3
     )
 
