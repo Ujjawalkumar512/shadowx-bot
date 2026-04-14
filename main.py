@@ -251,7 +251,73 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
             f"{member.mention} ko 3 warns ke baad mute kar diya 🔇"
         )
 
+class HelpView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=60)
 
+    @discord.ui.button(label="🛠 General", style=discord.ButtonStyle.primary)
+    async def general(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        embed = discord.Embed(
+            title="🛠 General Commands",
+            description="Basic ShadowX commands",
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Commands", value="`.ping`\n`.hello`\n`.help`", inline=False)
+
+        await interaction.response.edit_message(embed=embed, view=self)
+
+    @discord.ui.button(label="🛡 Moderation", style=discord.ButtonStyle.danger)
+    async def mod(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        embed = discord.Embed(
+            title="🛡 Moderation Commands",
+            description="Server security tools",
+            color=discord.Color.red()
+        )
+        embed.add_field(
+            name="Commands",
+            value="`.kick`\n`.ban`\n`.clear`\n`.lock`\n`.unlock`\n`.warn`",
+            inline=False
+        )
+
+        await interaction.response.edit_message(embed=embed, view=self)
+
+    @discord.ui.button(label="⚡ NP System", style=discord.ButtonStyle.success)
+    async def np(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        embed = discord.Embed(
+            title="⚡ NP System",
+            description="Manage NP database",
+            color=discord.Color.green()
+        )
+        embed.add_field(
+            name="Commands",
+            value="`.npadd <id>`\n`.npremove <id>`\n`.nplist`",
+            inline=False
+        )
+
+        await interaction.response.edit_message(embed=embed, view=self)
+
+class Help(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def help(self, ctx):
+
+        embed = discord.Embed(
+            title="⚡ ShadowX Help Menu ⚡",
+            description="Choose a module below",
+            color=discord.Color.blue()
+        )
+
+        embed.set_footer(text="ShadowX Powered by 1tz.jack 🔥")
+
+        await ctx.send(embed=embed, view=HelpView())
+
+async def setup(bot):
+    await bot.add_cog(Help(bot))
 
 import os
 bot.run(os.getenv("TOKEN"))
