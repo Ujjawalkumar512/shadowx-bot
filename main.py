@@ -184,13 +184,13 @@ async def clear(ctx, amount: int):
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member: discord.Member, *, reason="No reason"):
     await member.kick(reason=reason)
-    await ctx.send(f"{member.mention} ko kick kar diya 👢")
+    await ctx.send(f"{member.mention} has been kiked.")
 
 @bot.command()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member: discord.Member, *, reason="No reason"):
     await member.ban(reason=reason)
-    await ctx.send(f"{member.mention} ko ban kar diya 🔨")
+    await ctx.send(f"{member.mention} has been baned.")
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -199,7 +199,7 @@ async def lock(ctx):
         ctx.guild.default_role,
         send_messages=False
     )
-    await ctx.send(f" ✅ <#{ctx.channel.id}> has been locked..")
+    await ctx.send(f" ✅ <#{ctx.channel.id}> has been locked.")
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -248,7 +248,7 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
         await member.add_roles(muted_role)
 
         await ctx.send(
-            f"{member.mention} ko 3 warns ke baad mute kar diya 🔇"
+            f"{member.mention} muted. "
         )
 # =========================
 # PRO HELP MENU (EMBED UI)
