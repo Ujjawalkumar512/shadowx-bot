@@ -199,7 +199,7 @@ async def lock(ctx):
         ctx.guild.default_role,
         send_messages=False
     )
-    await ctx.send(f" <:Tick:1493635793456074963> <#{ctx.channel.id}> has been locked.")
+    await ctx.send(f" ✔ <#{ctx.channel.id}> has been locked.")
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -208,7 +208,7 @@ async def unlock(ctx):
         ctx.guild.default_role,
         send_messages=True
     )
-    await ctx.send(f" <:Tick:1493635793456074963> <#{ctx.channel.id}> has been unlocked.")
+    await ctx.send(f" ✔ <#{ctx.channel.id}> has been unlocked.")
 
 # =========================
 # WARN SYSTEM
