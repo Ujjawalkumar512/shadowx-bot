@@ -149,7 +149,7 @@ async def npadd(ctx, user_id: int):
         return
 
     np_users.add(user_id)
-    await ctx.send(f"✅ NP add ho gaya: {user_id}")
+    await ctx.send(f" ✔ NP add ho gaya: {user_id}")
 
 @bot.command()
 async def npremove(ctx, user_id: int):
@@ -158,7 +158,7 @@ async def npremove(ctx, user_id: int):
         return
 
     np_users.discard(user_id)
-    await ctx.send(f"✅ NP remove ho gaya: {user_id}")
+    await ctx.send(f" ✔ NP remove ho gaya: {user_id}")
 
 @bot.command()
 async def nplist(ctx):
@@ -199,7 +199,7 @@ async def lock(ctx):
         ctx.guild.default_role,
         send_messages=False
     )
-    await ctx.send("Channel lock kar diya 🔒")
+    await ctx.send(f" ✅ <#{ctx.channel.id}> has been locked..")
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
@@ -208,7 +208,7 @@ async def unlock(ctx):
         ctx.guild.default_role,
         send_messages=True
     )
-    await ctx.send("Channel unlock kar diya 🔓")
+    await ctx.send(f" ✅ <#{ctx.channel.id}> has been unlocked.")
 
 # =========================
 # WARN SYSTEM
@@ -223,7 +223,7 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
     count = warnings[member.id]
 
     await ctx.send(
-        f"{member.mention} ko warn diya ⚠️\n"
+        f"{member.mention} has been warned.\n"
         f"Reason: {reason}\n"
         f"Total warns: {count}"
     )
@@ -231,12 +231,12 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
     if count >= 3:
         muted_role = discord.utils.get(
             ctx.guild.roles,
-            name="Muted"
+            name="Timeout 1m"
         )
 
         if muted_role is None:
             muted_role = await ctx.guild.create_role(
-                name="Muted"
+                name="Timeout 1m"
             )
 
             for channel in ctx.guild.channels:
@@ -250,7 +250,52 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
         await ctx.send(
             f"{member.mention} ko 3 warns ke baad mute kar diya 🔇"
         )
+# =========================
+# PRO HELP MENU (EMBED UI)
+# =========================
+@bot.command(name="prohelp")
+async def help(ctx):
 
+    embed = discord.Embed(
+        title="⚡ ShadowX Pro Panel",
+        description="Select category below 👇",
+        color=0x00ffcc
+    )
+
+    embed.add_field(name="🛡 Moderation", value="kick, ban, warn", inline=False)
+    embed.add_field(name="🎮 Fun", value="ping, hello", inline=False)
+    embed.add_field(name="⚙ Utility", value="info, server", inline=False)
+
+    view = HelpView()
+    await ctx.send(embed=embed, view=view)
+
+# =========================
+# BUTTON UI
+# =========================
+class HelpView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="Moderation", style=discord.ButtonStyle.red)
+    async def mod(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message(
+            "🛡 Moderation:\n.kick\n.ban\n.warn",
+            ephemeral=True
+        )
+
+    @discord.ui.button(label="Fun", style=discord.ButtonStyle.green)
+    async def fun(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message(
+            "🎮 Fun:\n.ping\n.hello",
+            ephemeral=True
+        )
+
+    @discord.ui.button(label="Utility", style=discord.ButtonStyle.blurple)
+    async def util(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message(
+            "⚙ Utility:\n.help\n.server",
+            ephemeral=True
+        )
 
 import os
 bot.run(os.getenv("TOKEN"))
