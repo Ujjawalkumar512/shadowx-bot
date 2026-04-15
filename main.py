@@ -377,6 +377,62 @@ async def automod(ctx, mode: str):
     else:
         await ctx.send("Usage: .automod enable/disable")
 
+@bot.command()
+async def avatar(ctx, member: discord.Member = None):
+    member = member or ctx.author
+
+    embed = discord.Embed(
+        title=f"🖼 Avatar of {member}",
+        color=0x5865F2
+    )
+
+    embed.set_image(url=member.display_avatar.url)
+    embed.set_footer(text="ShadowX Avatar System")
+
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def profile(ctx, member: discord.Member = None):
+    member = member or ctx.author
+
+    embed = discord.Embed(
+        title=f"👤 Profile of {member}",
+        color=0x2ecc71
+    )
+
+    embed.set_thumbnail(url=member.display_avatar.url)
+
+    embed.add_field(name="Name", value=member.name, inline=True)
+    embed.add_field(name="ID", value=member.id, inline=True)
+    embed.add_field(name="Joined Server", value=member.joined_at.strftime("%Y-%m-%d"), inline=False)
+
+    embed.set_footer(text="ShadowX Profile System")
+
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def servericon(ctx):
+    embed = discord.Embed(
+        title="🖼 Server Icon",
+        color=0xe74c3c
+    )
+
+    embed.set_image(url=ctx.guild.icon.url if ctx.guild.icon else None)
+
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def serverbanner(ctx):
+    if ctx.guild.banner:
+        embed = discord.Embed(
+            title="🎨 Server Banner",
+            color=0xf1c40f
+        )
+        embed.set_image(url=ctx.guild.banner.url)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("❌ Server banner not available")
+
 
 
 import os
