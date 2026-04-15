@@ -126,7 +126,7 @@ async def help_menu(ctx):
 
     embed.add_field(
         name="🛡 Moderation",
-        value="kick\nban\nclear\nlock\nunlock\nwarn",
+        value="kick\nban\nunban\nclear\nlock\nunlock\nwarn\nunwarn\nantinuke enable/disable",
         inline=False
     )
 
