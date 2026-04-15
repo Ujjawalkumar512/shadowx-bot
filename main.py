@@ -112,37 +112,70 @@ async def hello(ctx):
 async def ping(ctx):
     await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
 
-# =========================
-# HELP MENU
-# =========================
+class HelpDropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label="General", emoji="🛠"),
+            discord.SelectOption(label="Moderation", emoji="🛡"),
+            discord.SelectOption(label="NP System", emoji="⚡")
+        ]
+
+        super().__init__(
+            placeholder="Select module...",
+            min_values=1,
+            max_values=1,
+            options=options
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        selected = self.values[0]
+
+        embed = discord.Embed(color=0x5865F2)
+
+        if selected == "General":
+            embed.title = "🛠 General Commands"
+            embed.description = (
+                ".ping\n"
+                ".hello\n"
+                ".avatar\n"
+                ".profile"
+            )
+
+        elif selected == "Moderation":
+            embed.title = "🛡 Moderation Commands"
+            embed.description = (
+                ".kick\n"
+                ".ban\n"
+                ".unban\n"
+                ".clear\n"
+                ".warn\n"
+                ".unwarn"
+            )
+
+        elif selected == "NP System":
+            embed.title = "⚡ NP System"
+            embed.description = (
+                ".npadd\n"
+                ".npremove\n"
+                ".nplist"
+            )
+
+        await interaction.response.edit_message(embed=embed, view=self.view)
+
+class HelpMenu(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.add_item(HelpDropdown())
+
 @bot.command(name="help")
 async def help_menu(ctx):
     embed = discord.Embed(
-        title="⚡ ShadowX Help Menu ⚡",
-        description="Powerful multipurpose Discord bot",
-        color=discord.Color.blue()
+        title="⚡ ShadowX Help Panel",
+        description="Select category below 👇",
+        color=0x5865F2
     )
 
-    embed.add_field(
-        name="🛠 General",
-        value="ping\nhello\nhelp",
-        inline=False
-    )
-
-    embed.add_field(
-        name="🛡 Moderation",
-        value="kick\nban\nunban\nclear\nlock\nunlock\nwarn\nunwarn\nantinuke enable/disable\nautomod enable/disable",
-        inline=False
-    )
-
-    embed.add_field(
-        name="⚡ NP System",
-        value="npadd <id>\nnpremove <id>\nnplist",
-        inline=False
-    )
-
-    embed.set_footer(text="ShadowX Powered by 1tz.jack 🔥")
-    await ctx.send(embed=embed)
+    await ctx.send(embed=embed, view=HelpMenu())
 
 # =========================
 # NP SYSTEM
@@ -268,55 +301,6 @@ async def warns(ctx, member: discord.Member):
         f"⚠️ Warnings for {member.mention}:\n{warn_list}"
     )
 
-
-
-
-# =========================
-# PRO HELP MENU (EMBED UI)
-# =========================
-@bot.command(name="prohelp")
-async def help(ctx):
-
-    embed = discord.Embed(
-        title="⚡ ShadowX Pro Panel",
-        description="Select category below 👇",
-        color=0x00ffcc
-    )
-
-    embed.add_field(name="🛡 Moderation", value="kick, ban, warn", inline=False)
-    embed.add_field(name="🎮 Fun", value="ping, hello", inline=False)
-    embed.add_field(name="⚙ Utility", value="info, server", inline=False)
-
-    view = HelpView()
-    await ctx.send(embed=embed, view=view)
-
-# =========================
-# BUTTON UI
-# =========================
-class HelpView(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-
-    @discord.ui.button(label="Moderation", style=discord.ButtonStyle.red)
-    async def mod(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(
-            "🛡 Moderation:\n.kick\n.ban\n.warn",
-            ephemeral=True
-        )
-
-    @discord.ui.button(label="Fun", style=discord.ButtonStyle.green)
-    async def fun(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(
-            "🎮 Fun:\n.ping\n.hello",
-            ephemeral=True
-        )
-
-    @discord.ui.button(label="Utility", style=discord.ButtonStyle.blurple)
-    async def util(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(
-            "⚙ Utility:\n.help\n.server",
-            ephemeral=True
-        )
 
 @bot.command()
 async def status(ctx):
