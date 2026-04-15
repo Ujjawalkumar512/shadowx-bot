@@ -523,7 +523,4 @@ async def kill(ctx, member: discord.Member):
 
     await ctx.send(embed=embed)
 
-
-
-import os
 bot.run(os.getenv("TOKEN"))
