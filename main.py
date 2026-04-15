@@ -150,7 +150,7 @@ class HelpDropdown(discord.ui.Select):
                 ".unban\n"
                 ".clear\n"
                 ".warn\n"
-                ".unwarn\"
+                ".unwarn\n"
                 ".wladd\n"
                 ".wlremoven"
             )
