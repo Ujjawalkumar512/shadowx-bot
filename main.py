@@ -433,6 +433,64 @@ async def serverbanner(ctx):
     else:
         await ctx.send("❌ Server banner not available")
 
+@bot.command()
+async def kill(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="💀 Kill Action",
+        description=f"{ctx.author.mention} tried to kill {member.mention} 💥",
+        color=0x000000
+    )
+    embed.set_footer(text="It's just fun 😄")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def punch(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="👊 Punch Action",
+        description=f"{ctx.author.mention} punched {member.mention} 😆",
+        color=0xff5733
+    )
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def slap(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="🖐 Slap Action",
+        description=f"{ctx.author.mention} slapped {member.mention} 😂",
+        color=0xff0000
+    )
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def hug(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="🤗 Hug Action",
+        description=f"{ctx.author.mention} hugged {member.mention} ❤️",
+        color=0xff69b4
+    )
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def kiss(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="💋 Kiss Action",
+        description=f"{ctx.author.mention} kissed {member.mention} 😳",
+        color=0xff1493
+    )
+    await ctx.send(embed=embed)
+
+import random
+
+@bot.command()
+async def joke(ctx):
+    jokes = [
+        "Why don’t bots get tired? Because they have infinite RAM 😂",
+        "I told my code a joke… now it has errors 😭",
+        "Debugging: Being the detective in a crime movie where you are also the murderer 💀"
+    ]
+
+    await ctx.send(random.choice(jokes))
+
 
 
 import os
