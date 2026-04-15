@@ -431,6 +431,5 @@ async def whitelist(ctx):
     await ctx.send(f"🛡 Whitelisted Users:\n{users}")
 
 
-
 import os
 bot.run(os.getenv("TOKEN"))
