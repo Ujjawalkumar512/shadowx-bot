@@ -21,6 +21,10 @@ OWNER_ID = 1458873558502478095
 np_users = {OWNER_ID}   # owner default NP
 warnings = {}
 BAD_WORDS = ["mc", "bc", "gali"]
+settings = {
+    "antinuke": False,
+    "automod": True
+}
 
 # =========================
 # BOT ONLINE
