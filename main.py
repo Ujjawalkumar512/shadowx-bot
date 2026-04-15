@@ -193,6 +193,14 @@ async def ban(ctx, member: discord.Member, *, reason="No reason"):
     await ctx.send(f"{member.mention} has been baned.")
 
 @bot.command()
+@commands.has_permissions(ban_members=True)
+async def unban(ctx, user_id: int):
+    user = await bot.fetch_user(user_id)
+    await ctx.guild.unban(user)
+
+    await ctx.send(f"🔓 Unbanned {user.name}")
+
+@bot.command()
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx):
     await ctx.channel.set_permissions(
@@ -250,6 +258,41 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
         await ctx.send(
             f"{member.mention} muted. "
         )
+
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def unwarn(ctx, member: discord.Member, index: int = None):
+    user_id = member.id
+
+    if user_id not in warnings or len(warnings[user_id]) == 0:
+        return await ctx.send("❌ No warnings found for this user")
+
+    # Remove specific warn
+    if index is not None:
+        try:
+            removed = warnings[user_id].pop(index - 1)
+            await ctx.send(f"🔓 Removed warning: {removed}")
+        except:
+            await ctx.send("❌ Invalid warn index")
+    else:
+        # Remove last warn
+        removed = warnings[user_id].pop()
+        await ctx.send(f"🔓 Removed last warning: {removed}")
+
+@bot.command()
+async def warns(ctx, member: discord.Member):
+    user_id = member.id
+
+    if user_id not in warnings or len(warnings[user_id]) == 0:
+        return await ctx.send("✅ No warnings")
+
+    warn_list = "\n".join(
+        [f"{i+1}. {w}" for i, w in enumerate(warnings[user_id])]
+    )
+
+    await ctx.send(f"⚠️ Warnings for {member.mention}:\n{warn_list}")
+
+
 # =========================
 # PRO HELP MENU (EMBED UI)
 # =========================
