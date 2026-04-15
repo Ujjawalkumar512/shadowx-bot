@@ -433,63 +433,82 @@ async def serverbanner(ctx):
     else:
         await ctx.send("❌ Server banner not available")
 
+import random
+slap_gifs = [
+    "https://media.tenor.com/3w6qjN7M8GQAAAAC/anime-slap.gif",
+    "https://media.tenor.com/VU5m4xF7bEIAAAAC/slap-anime.gif"
+]
+
+hug_gifs = [
+    "https://media.tenor.com/OXCV_qL-V60AAAAC/mochi-peachcat-hug.gif",
+    "https://media.tenor.com/8Q9A8MZaA7MAAAAC/anime-hug.gif"
+]
+
+kiss_gifs = [
+    "https://media.tenor.com/b7m5k6nZK0QAAAAC/anime-kiss.gif",
+    "https://media.tenor.com/XiYuU9h44-AAAAAC/kiss-anime.gif"
+]
+
+punch_gifs = [
+    "https://media.tenor.com/fO1d8J4lK8YAAAAC/anime-punch.gif",
+    "https://media.tenor.com/3aX8Y4vKH6cAAAAC/punch-anime.gif"
+]
+
+kill_gifs = [
+    "https://media.tenor.com/4i8BH9lqN5MAAAAC/anime-fight.gif",
+    "https://media.tenor.com/7YQC7kQkM0EAAAAC/anime-kill.gif"
+]
+
 @bot.command()
-async def kill(ctx, member: discord.Member):
+async def slap(ctx, member: discord.Member):
     embed = discord.Embed(
-        title="💀 Kill Action",
-        description=f"{ctx.author.mention} tried to kill {member.mention} 💥",
-        color=0x000000
+        title="🖐 Slap",
+        description=f"{ctx.author.mention} slapped {member.mention} 😂",
+        color=0xff0000
     )
-    embed.set_footer(text="It's just fun 😄")
+    embed.set_image(url=random.choice(slap_gifs))
     await ctx.send(embed=embed)
 
 @bot.command()
 async def punch(ctx, member: discord.Member):
     embed = discord.Embed(
-        title="👊 Punch Action",
-        description=f"{ctx.author.mention} punched {member.mention} 😆",
+        title="👊 Punch",
+        description=f"{ctx.author.mention} punched {member.mention} 💥",
         color=0xff5733
     )
-    await ctx.send(embed=embed)
-
-@bot.command()
-async def slap(ctx, member: discord.Member):
-    embed = discord.Embed(
-        title="🖐 Slap Action",
-        description=f"{ctx.author.mention} slapped {member.mention} 😂",
-        color=0xff0000
-    )
+    embed.set_image(url=random.choice(punch_gifs))
     await ctx.send(embed=embed)
 
 @bot.command()
 async def hug(ctx, member: discord.Member):
     embed = discord.Embed(
-        title="🤗 Hug Action",
+        title="🤗 Hug",
         description=f"{ctx.author.mention} hugged {member.mention} ❤️",
         color=0xff69b4
     )
+    embed.set_image(url=random.choice(hug_gifs))
     await ctx.send(embed=embed)
 
 @bot.command()
 async def kiss(ctx, member: discord.Member):
     embed = discord.Embed(
-        title="💋 Kiss Action",
-        description=f"{ctx.author.mention} kissed {member.mention} 😳",
+        title="💋 Kiss",
+        description=f"{ctx.author.mention} gave a kiss to {member.mention} 😳",
         color=0xff1493
     )
+    embed.set_image(url=random.choice(kiss_gifs))
     await ctx.send(embed=embed)
 
-import random
-
 @bot.command()
-async def joke(ctx):
-    jokes = [
-        "Why don’t bots get tired? Because they have infinite RAM 😂",
-        "I told my code a joke… now it has errors 😭",
-        "Debugging: Being the detective in a crime movie where you are also the murderer 💀"
-    ]
-
-    await ctx.send(random.choice(jokes))
+async def kill(ctx, member: discord.Member):
+    embed = discord.Embed(
+        title="💀 Kill",
+        description=f"{ctx.author.mention} destroyed {member.mention} 💥",
+        color=0x000000
+    )
+    embed.set_image(url=random.choice(kill_gifs))
+    embed.set_footer(text="Just for fun 😄")
+    await ctx.send(embed=embed)
 
 
 
