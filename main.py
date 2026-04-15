@@ -230,10 +230,11 @@ async def unlock(ctx):
 @commands.has_permissions(manage_messages=True)
 async def warn(ctx, member: discord.Member, *, reason="No reason"):
     if member.id not in warnings:
-        warnings[user_id].pop()
+        warnings[member.id] = []
 
-    warnings[member.id] += 1
-    count = warnings[member.id]
+    warnings[member.id].append(reason)
+
+    count = len(warnings[member.id])
 
     await ctx.send(
         f"{member.mention} has been warned.\n"
@@ -241,61 +242,33 @@ async def warn(ctx, member: discord.Member, *, reason="No reason"):
         f"Total warns: {count}"
     )
 
-    if count >= 3:
-        muted_role = discord.utils.get(
-            ctx.guild.roles,
-            name="Timeout 1m"
-        )
-
-        if muted_role is None:
-            muted_role = await ctx.guild.create_role(
-                name="Timeout 1m"
-            )
-
-            for channel in ctx.guild.channels:
-                await channel.set_permissions(
-                    muted_role,
-                    send_messages=False
-                )
-
-        await member.add_roles(muted_role)
-
-        await ctx.send(
-            f"{member.mention} muted. "
-        )
-
 @bot.command()
 @commands.has_permissions(manage_messages=True)
-async def unwarn(ctx, member: discord.Member, index: int = None):
-    user_id = member.id
+async def unwarn(ctx, member: discord.Member):
+    if member.id not in warnings or not warnings[member.id]:
+        return await ctx.send("❌ No warnings found")
 
-    if user_id not in warnings or len(warnings[user_id]) == 0:
-        return await ctx.send("❌ No warnings found for this user")
+    removed = warnings[member.id].pop()
 
-    # Remove specific warn
-    if index is not None:
-        try:
-            removed = warnings[user_id].pop(index - 1)
-            await ctx.send(f"🔓 Removed warning: {removed}")
-        except:
-            await ctx.send("❌ Invalid warn index")
-    else:
-        # Remove last warn
-        removed = warnings[user_id].pop()
-        await ctx.send(f"🔓 Removed last warning: {removed}")
+    await ctx.send(
+        f"🔓 Removed warning from {member.mention}\n"
+        f"Removed: {removed}"
+    )
 
 @bot.command()
 async def warns(ctx, member: discord.Member):
-    user_id = member.id
-
-    if user_id not in warnings or len(warnings[user_id]) == 0:
+    if member.id not in warnings or not warnings[member.id]:
         return await ctx.send("✅ No warnings")
 
     warn_list = "\n".join(
-        [f"{i+1}. {w}" for i, w in enumerate(warnings[user_id])]
+        [f"{i+1}. {w}" for i, w in enumerate(warnings[member.id])]
     )
 
-    await ctx.send(f"⚠️ Warnings for {member.mention}:\n{warn_list}")
+    await ctx.send(
+        f"⚠️ Warnings for {member.mention}:\n{warn_list}"
+    )
+
+
 
 
 # =========================
