@@ -152,7 +152,7 @@ class HelpDropdown(discord.ui.Select):
                 ".warn\n"
                 ".unwarn\n"
                 ".wladd\n"
-                ".wlremoven"
+                ".wlremove"
             )
 
         elif selected == "NP System":
