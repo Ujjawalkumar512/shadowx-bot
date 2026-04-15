@@ -433,81 +433,94 @@ async def serverbanner(ctx):
     else:
         await ctx.send("❌ Server banner not available")
 
+import requests
 import random
-slap_gifs = [
-    "https://media.tenor.com/3w6qjN7M8GQAAAAC/anime-slap.gif",
-    "https://media.tenor.com/VU5m4xF7bEIAAAAC/slap-anime.gif"
-]
 
-hug_gifs = [
-    "https://media.tenor.com/OXCV_qL-V60AAAAC/mochi-peachcat-hug.gif",
-    "https://media.tenor.com/8Q9A8MZaA7MAAAAC/anime-hug.gif"
-]
+def get_gif(action):
+    url = f"https://g.tenor.com/v1/search?q=anime+{action}&key=LIVDSRZULELA&limit=10"
+    
+    response = requests.get(url)
+    data = response.json()
 
-kiss_gifs = [
-    "https://media.tenor.com/b7m5k6nZK0QAAAAC/anime-kiss.gif",
-    "https://media.tenor.com/XiYuU9h44-AAAAAC/kiss-anime.gif"
-]
+    if "results" in data and len(data["results"]) > 0:
+        gif = random.choice(data["results"])
+        return gif["media"][0]["gif"]["url"]
 
-punch_gifs = [
-    "https://media.tenor.com/fO1d8J4lK8YAAAAC/anime-punch.gif",
-    "https://media.tenor.com/3aX8Y4vKH6cAAAAC/punch-anime.gif"
-]
-
-kill_gifs = [
-    "https://media.tenor.com/4i8BH9lqN5MAAAAC/anime-fight.gif",
-    "https://media.tenor.com/7YQC7kQkM0EAAAAC/anime-kill.gif"
-]
+    return None
 
 @bot.command()
 async def slap(ctx, member: discord.Member):
+    gif_url = get_gif("slap")
+
     embed = discord.Embed(
         title="🖐 Slap",
         description=f"{ctx.author.mention} slapped {member.mention} 😂",
         color=0xff0000
     )
-    embed.set_image(url=random.choice(slap_gifs))
-    await ctx.send(embed=embed)
 
-@bot.command()
-async def punch(ctx, member: discord.Member):
-    embed = discord.Embed(
-        title="👊 Punch",
-        description=f"{ctx.author.mention} punched {member.mention} 💥",
-        color=0xff5733
-    )
-    embed.set_image(url=random.choice(punch_gifs))
+    if gif_url:
+        embed.set_image(url=gif_url)
+
     await ctx.send(embed=embed)
 
 @bot.command()
 async def hug(ctx, member: discord.Member):
+    gif_url = get_gif("hug")
+
     embed = discord.Embed(
         title="🤗 Hug",
         description=f"{ctx.author.mention} hugged {member.mention} ❤️",
         color=0xff69b4
     )
-    embed.set_image(url=random.choice(hug_gifs))
+
+    if gif_url:
+        embed.set_image(url=gif_url)
+
     await ctx.send(embed=embed)
 
 @bot.command()
 async def kiss(ctx, member: discord.Member):
+    gif_url = get_gif("kiss")
+
     embed = discord.Embed(
         title="💋 Kiss",
-        description=f"{ctx.author.mention} gave a kiss to {member.mention} 😳",
+        description=f"{ctx.author.mention} kissed {member.mention} 😳",
         color=0xff1493
     )
-    embed.set_image(url=random.choice(kiss_gifs))
+
+    if gif_url:
+        embed.set_image(url=gif_url)
+
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def punch(ctx, member: discord.Member):
+    gif_url = get_gif("punch")
+
+    embed = discord.Embed(
+        title="👊 Punch",
+        description=f"{ctx.author.mention} punched {member.mention} 💥",
+        color=0xff5733
+    )
+
+    if gif_url:
+        embed.set_image(url=gif_url)
+
     await ctx.send(embed=embed)
 
 @bot.command()
 async def kill(ctx, member: discord.Member):
+    gif_url = get_gif("fight")
+
     embed = discord.Embed(
         title="💀 Kill",
         description=f"{ctx.author.mention} destroyed {member.mention} 💥",
         color=0x000000
     )
-    embed.set_image(url=random.choice(kill_gifs))
-    embed.set_footer(text="Just for fun 😄")
+
+    if gif_url:
+        embed.set_image(url=gif_url)
+
     await ctx.send(embed=embed)
 
 
