@@ -18,6 +18,7 @@ bot = commands.Bot(
 # CONFIG
 # =========================
 OWNER_ID = 1458873558502478095
+whitelist_users = {OWNER_ID}
 np_users = {OWNER_ID}   # owner default NP
 warnings = {}
 BAD_WORDS = ["mc", "bc", "gali"]
@@ -394,6 +395,40 @@ async def serverbanner(ctx):
         await ctx.send(embed=embed)
     else:
         await ctx.send("❌ Server banner not available")
+
+def is_whitelisted():
+    async def predicate(ctx):
+        return ctx.author.id in whitelist_users
+    return commands.check(predicate)
+
+@bot.command()
+async def wladd(ctx, user_id: int):
+    if ctx.author.id != OWNER_ID:
+        return await ctx.send("❌ Only owner can use this")
+
+    whitelist_users.add(user_id)
+    await ctx.send(f"✅ Added {user_id} to whitelist")
+
+@bot.command()
+async def wlremove(ctx, user_id: int):
+    if ctx.author.id != OWNER_ID:
+        return await ctx.send("❌ Only owner can use this")
+
+    if user_id == OWNER_ID:
+        return await ctx.send("❌ Owner cannot be removed")
+
+    whitelist_users.discard(user_id)
+    await ctx.send(f"🗑 Removed {user_id} from whitelist")
+
+@bot.command()
+async def whitelist(ctx):
+    if ctx.author.id != OWNER_ID:
+        return await ctx.send("❌ Only owner can use this")
+
+    users = "\n".join(str(uid) for uid in whitelist_users)
+    await ctx.send(f"🛡 Whitelisted Users:\n{users}")
+
+
 
 import os
 bot.run(os.getenv("TOKEN"))
