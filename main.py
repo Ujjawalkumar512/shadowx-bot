@@ -230,7 +230,7 @@ async def unlock(ctx):
 @commands.has_permissions(manage_messages=True)
 async def warn(ctx, member: discord.Member, *, reason="No reason"):
     if member.id not in warnings:
-        warnings[member.id] = 0
+        warnings[user_id].pop()
 
     warnings[member.id] += 1
     count = warnings[member.id]
