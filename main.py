@@ -105,7 +105,7 @@ async def hello(ctx):
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send("Pong 🏓")
+    await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
 
 # =========================
 # HELP MENU
@@ -296,6 +296,45 @@ class HelpView(discord.ui.View):
             "⚙ Utility:\n.help\n.server",
             ephemeral=True
         )
+
+@bot.command()
+async def status(ctx):
+    await ctx.send(
+        f"✔ AntiNuke: {'ON' if settings['antinuke'] else 'OFF'}\n"
+        f"✔ AutoMod: {'ON' if settings['automod'] else 'OFF'}"
+    )
+
+# ================= ANTI NUKE =================
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def antinuke(ctx, mode: str):
+    if mode.lower() == "enable":
+        settings["antinuke"] = True
+        await ctx.send("✔ AntiNuke ENABLED")
+
+    elif mode.lower() == "disable":
+        settings["antinuke"] = False
+        await ctx.send("❌ AntiNuke DISABLED")
+
+    else:
+        await ctx.send("Usage: .antinuke enable/disable")
+
+# ================= AUTOMOD =================
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def automod(ctx, mode: str):
+    if mode.lower() == "enable":
+        settings["automod"] = True
+        await ctx.send("✔ AutoMod ENABLED")
+
+    elif mode.lower() == "disable":
+        settings["automod"] = False
+        await ctx.send("❌ AutoMod DISABLED")
+
+    else:
+        await ctx.send("Usage: .automod enable/disable")
+
+
 
 import os
 bot.run(os.getenv("TOKEN"))
