@@ -437,14 +437,16 @@ import requests
 import random
 
 def get_gif(action):
-    url = f"https://g.tenor.com/v1/search?q=anime+{action}&key=LIVDSRZULELA&limit=10"
-    
-    response = requests.get(url)
-    data = response.json()
+    try:
+        url = f"https://g.tenor.com/v1/search?q=anime+{action}&key=LIVDSRZULELA&limit=10"
+        response = requests.get(url, timeout=10)
+        data = response.json()
 
-    if "results" in data and len(data["results"]) > 0:
-        gif = random.choice(data["results"])
-        return gif["media"][0]["gif"]["url"]
+        if "results" in data and len(data["results"]) > 0:
+            return random.choice(data["results"])["media"][0]["gif"]["url"]
+
+    except Exception as e:
+        print("GIF Error:", e)
 
     return None
 
