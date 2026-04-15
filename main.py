@@ -27,14 +27,15 @@ BAD_WORDS = ["mc", "bc", "gali"]
 # =========================
 @bot.event
 async def on_ready():
-    print("ShadowX online ho gaya 🔥")
-
     await bot.change_presence(
+        status=discord.Status.dnd,
         activity=discord.Activity(
             type=discord.ActivityType.watching,
-            name="ShadowX Faster Then Light ⚡"
+            name="🛡 ShadowX Security"
         )
     )
+    print(f"{bot.user} is ready")
+
 
 # =========================
 # JOIN + AUTOROLE
