@@ -433,5 +433,5 @@ async def serverbanner(ctx):
     else:
         await ctx.send("❌ Server banner not available")
 
-
+import os
 bot.run(os.getenv("TOKEN"))
